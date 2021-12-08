@@ -1,43 +1,35 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('company_bank', {
+  return sequelize.define('item', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    bank_id: {
+    item_category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'bank',
+        model: 'item_category',
         key: 'id'
       }
     },
-    branch: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    address: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    account_number: {
+    name: {
       type: DataTypes.STRING(50),
       allowNull: false
     },
-    account_name: {
-      type: DataTypes.STRING(100),
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    stock: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    company_id: {
+    price: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'company',
-        key: 'id'
-      }
+      allowNull: false
     },
     is_deleted: {
       type: DataTypes.BOOLEAN,
@@ -46,19 +38,17 @@ module.exports = function(sequelize, DataTypes) {
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
     },
     updated_at: {
       type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
-    tableName: 'company_bank',
+    tableName: 'item',
     timestamps: false,
     indexes: [
       {
@@ -70,17 +60,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "company_id",
+        name: "item_category_id",
         using: "BTREE",
         fields: [
-          { name: "company_id" },
-        ]
-      },
-      {
-        name: "bank_id",
-        using: "BTREE",
-        fields: [
-          { name: "bank_id" },
+          { name: "item_category_id" },
         ]
       },
     ]

@@ -1,40 +1,27 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('account_category', {
+  return sequelize.define('cart', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+    item_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'item',
+        key: 'id'
+      }
     },
-    prefix_code: {
+    qty: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    is_deleted: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: 0
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'account_category',
+    tableName: 'cart',
     timestamps: false,
     indexes: [
       {
@@ -43,6 +30,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "item_id",
+        using: "BTREE",
+        fields: [
+          { name: "item_id" },
         ]
       },
     ]

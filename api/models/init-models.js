@@ -1,64 +1,37 @@
 var DataTypes = require("sequelize").DataTypes;
-var _account = require("./account");
-var _account_category = require("./account_category");
-var _bank = require("./bank");
-var _company = require("./company");
-var _company_bank = require("./company_bank");
-var _company_tax = require("./company_tax");
-var _gender = require("./gender");
-var _product_category = require("./product_category");
-var _product_unit_type = require("./product_unit_type");
-var _role = require("./role");
-var _user = require("./user");
+var _admin = require("./admin");
+var _bill = require("./bill");
+var _bill_detail = require("./bill_detail");
+var _cart = require("./cart");
+var _item = require("./item");
+var _item_category = require("./item_category");
 
 function initModels(sequelize) {
-  var account = _account(sequelize, DataTypes);
-  var account_category = _account_category(sequelize, DataTypes);
-  var bank = _bank(sequelize, DataTypes);
-  var company = _company(sequelize, DataTypes);
-  var company_bank = _company_bank(sequelize, DataTypes);
-  var company_tax = _company_tax(sequelize, DataTypes);
-  var gender = _gender(sequelize, DataTypes);
-  var product_category = _product_category(sequelize, DataTypes);
-  var product_unit_type = _product_unit_type(sequelize, DataTypes);
-  var role = _role(sequelize, DataTypes);
-  var user = _user(sequelize, DataTypes);
+  var admin = _admin(sequelize, DataTypes);
+  var bill = _bill(sequelize, DataTypes);
+  var bill_detail = _bill_detail(sequelize, DataTypes);
+  var cart = _cart(sequelize, DataTypes);
+  var item = _item(sequelize, DataTypes);
+  var item_category = _item_category(sequelize, DataTypes);
 
-  account.belongsTo(account_category, { as: "account_category", foreignKey: "account_category_id"});
-  account_category.hasMany(account, { as: "accounts", foreignKey: "account_category_id"});
-  account.belongsTo(bank, { as: "bank", foreignKey: "bank_id"});
-  bank.hasMany(account, { as: "accounts", foreignKey: "bank_id"});
-  company_bank.belongsTo(bank, { as: "bank", foreignKey: "bank_id"});
-  bank.hasMany(company_bank, { as: "company_banks", foreignKey: "bank_id"});
-  account.belongsTo(company, { as: "company", foreignKey: "company_id"});
-  company.hasMany(account, { as: "accounts", foreignKey: "company_id"});
-  company_bank.belongsTo(company, { as: "company", foreignKey: "company_id"});
-  company.hasMany(company_bank, { as: "company_banks", foreignKey: "company_id"});
-  product_category.belongsTo(company, { as: "company", foreignKey: "company_id"});
-  company.hasMany(product_category, { as: "product_categories", foreignKey: "company_id"});
-  product_unit_type.belongsTo(company, { as: "company", foreignKey: "company_id"});
-  company.hasMany(product_unit_type, { as: "product_unit_types", foreignKey: "company_id"});
-  user.belongsTo(company, { as: "company", foreignKey: "company_id"});
-  company.hasMany(user, { as: "users", foreignKey: "company_id"});
-  account.belongsTo(company_tax, { as: "company_tax", foreignKey: "company_tax_id"});
-  company_tax.hasMany(account, { as: "accounts", foreignKey: "company_tax_id"});
-  user.belongsTo(gender, { as: "gender", foreignKey: "gender_id"});
-  gender.hasMany(user, { as: "users", foreignKey: "gender_id"});
-  user.belongsTo(role, { as: "role", foreignKey: "role_id"});
-  role.hasMany(user, { as: "users", foreignKey: "role_id"});
+  bill_detail.belongsTo(bill, { as: "bill", foreignKey: "bill_id"});
+  bill.hasMany(bill_detail, { as: "bill_details", foreignKey: "bill_id"});
+  bill.belongsTo(item, { as: "item", foreignKey: "item_id"});
+  item.hasMany(bill, { as: "bills", foreignKey: "item_id"});
+  bill_detail.belongsTo(item, { as: "item", foreignKey: "item_id"});
+  item.hasMany(bill_detail, { as: "bill_details", foreignKey: "item_id"});
+  cart.belongsTo(item, { as: "item", foreignKey: "item_id"});
+  item.hasMany(cart, { as: "carts", foreignKey: "item_id"});
+  item.belongsTo(item_category, { as: "item_category", foreignKey: "item_category_id"});
+  item_category.hasMany(item, { as: "items", foreignKey: "item_category_id"});
 
   return {
-    account,
-    account_category,
-    bank,
-    company,
-    company_bank,
-    company_tax,
-    gender,
-    product_category,
-    product_unit_type,
-    role,
-    user,
+    admin,
+    bill,
+    bill_detail,
+    cart,
+    item,
+    item_category,
   };
 }
 module.exports = initModels;

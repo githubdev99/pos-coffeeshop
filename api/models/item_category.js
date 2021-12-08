@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('gender', {
+  return sequelize.define('item_category', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -8,12 +8,17 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.STRING(50),
       allowNull: false
+    },
+    is_deleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,
-    tableName: 'gender',
+    tableName: 'item_category',
     timestamps: false,
     indexes: [
       {

@@ -1,44 +1,39 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('product_category', {
+  return sequelize.define('bill_detail', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    company_id: {
+    bill_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'company',
+        model: 'bill',
         key: 'id'
       }
     },
-    is_deleted: {
-      type: DataTypes.BOOLEAN,
+    item_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0
+      references: {
+        model: 'item',
+        key: 'id'
+      }
     },
-    created_at: {
-      type: DataTypes.DATE,
+    qty: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
-    tableName: 'product_category',
+    tableName: 'bill_detail',
     timestamps: false,
     indexes: [
       {
@@ -50,10 +45,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "company_id",
+        name: "bill_id",
         using: "BTREE",
         fields: [
-          { name: "company_id" },
+          { name: "bill_id" },
+        ]
+      },
+      {
+        name: "item_id",
+        using: "BTREE",
+        fields: [
+          { name: "item_id" },
         ]
       },
     ]
