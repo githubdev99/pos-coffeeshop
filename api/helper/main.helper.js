@@ -124,7 +124,7 @@ helper.decryptText = (encryptText) => {
     return bytes.toString(CryptoJS.enc.Utf8);
 }
 
-helper.jwtEncode = (data, expiresIn = '6h') => {
+helper.jwtEncode = (data, expiresIn = '') => {
     const token = jwt.sign(data, dotenv.JWT_SECRET_KEY, (expiresIn) ? {
         expiresIn: expiresIn
     } : {})
