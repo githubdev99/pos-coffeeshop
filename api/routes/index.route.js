@@ -7,6 +7,5 @@ router.get('/', function (req, res, next) {
 
 // Routing Base Endpoint
 router.use('/auth', global.modules('route').auth);
-router.use('/user', global.modules('route').user);
 
 module.exports = router;

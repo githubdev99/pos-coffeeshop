@@ -6,35 +6,16 @@ exports.postLogin = async (req, res) => {
 
     try {
         let data = {}
-        let paramUserAccount = {}
+        let paramAdmin = {}
 
-        paramUserAccount.where = {
-            email: req.body.email,
+        paramAdmin.where = {
+            username: req.body.username,
         }
 
-        paramUserAccount.include = [
-            {
-                model: models.gender,
-                as: 'gender',
-                required: true,
-            },
-            {
-                model: models.company,
-                as: 'company',
-                required: false,
-            },
-            {
-                model: models.role,
-                as: 'role',
-                required: true,
-            },
-        ]
-
-        let parsingUserAccount = await models.admin.findOne(paramUserAccount)
+        let parsingAdmin = await models.admin.findOne(paramAdmin)
 
         data = global.modules('helper').main.encryptText(global.modules('helper').main.jwtEncode({
-            id: parsingUserAccount.id,
-            roleId: parsingUserAccount.role.id,
+            id: parsingAdmin.id,
         }))
 
         output.status = {
@@ -42,6 +23,37 @@ exports.postLogin = async (req, res) => {
             message: 'sukses mendapat data',
         }
         output.data = `Bearer ${data}`;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
+
+exports.postUser = async (req, res) => {
+    let output = {};
+
+    try {
+        let insertAdmin = await models.admin.create({
+            username: req.body.username,
+            password: await global.modules('helper').main.hashPassword(req.body.password),
+            name: req.body.name,
+        })
+
+        if (!insertAdmin) {
+            output.status = {
+                code: 400,
+                message: 'gagal input data',
+            }
+        } else {
+            output.status = {
+                code: 200,
+                message: 'sukses input data',
+            }
+        }
     } catch (error) {
         output.status = {
             code: 500,
