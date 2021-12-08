@@ -14,7 +14,7 @@ const getUserDetail = () => [
         try {
             let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
 
-            let checkDataExist = await models.user.findOne({
+            let checkDataExist = await models.admin.findOne({
                 where: {
                     id: req.params.id,
                     ...(dataAuth.role.id !== 1) ? {
@@ -96,7 +96,7 @@ const postUser = () => [
 
     body().custom(async ({ }, { req }) => {
         try {
-            let checkEmailExist = await models.user.findOne({
+            let checkEmailExist = await models.admin.findOne({
                 where: {
                     email: req.body.email.toLowerCase(),
                 }

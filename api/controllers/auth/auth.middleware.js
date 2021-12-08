@@ -21,7 +21,7 @@ const postLogin = () => [
 
     body().custom(async ({ }, { req }) => {
         try {
-            let parsingUserAccount = await models.user.findOne({
+            let parsingUserAccount = await models.admin.findOne({
                 where: {
                     email: req.body.email.toLowerCase(),
                 },

@@ -18,17 +18,14 @@ global.modules = (module) => {
 			main: require(`${process.cwd()}/helper/main.helper`),
 		},
 		route: {
-			master: require(`${process.cwd()}/routes/master.route`),
 			auth: require(`${process.cwd()}/routes/auth.route`),
 			user: require(`${process.cwd()}/routes/user.route`),
 		},
 		middleware: {
-			master: require(`${process.cwd()}/controllers/master/master.middleware`),
 			auth: require(`${process.cwd()}/controllers/auth/auth.middleware`),
 			user: require(`${process.cwd()}/controllers/user/user.middleware`),
 		},
 		controller: {
-			master: require(`${process.cwd()}/controllers/master/master.controller`),
 			auth: require(`${process.cwd()}/controllers/auth/auth.controller`),
 			user: require(`${process.cwd()}/controllers/user/user.controller`),
 		},
@@ -79,7 +76,7 @@ app.use(function (err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	res.render('error', {
-		title: 'Elogs API',
+		title: 'POS Coffee Shop API',
 		message: err.message,
 		error: err
 	});

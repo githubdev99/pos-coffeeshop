@@ -30,7 +30,7 @@ exports.postLogin = async (req, res) => {
             },
         ]
 
-        let parsingUserAccount = await models.user.findOne(paramUserAccount)
+        let parsingUserAccount = await models.admin.findOne(paramUserAccount)
 
         data = global.modules('helper').main.encryptText(global.modules('helper').main.jwtEncode({
             id: parsingUserAccount.id,

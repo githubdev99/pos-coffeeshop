@@ -91,85 +91,11 @@ const configGetUser = () => {
     }
 }
 
-exports.getUserDetail = async (req, res) => {
-    let output = {};
-    let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
-
-    try {
-        let data = {}
-
-        let parsingUser = await models.user.findOne({
-            where: {
-                id: req.params.id,
-                ...(dataAuth.role.id !== 1) ? {
-                    role_id: {
-                        [Op.ne]: 1,
-                    },
-                    company_id: dataAuth.company.id,
-                } : {},
-            },
-            include: [
-                {
-                    model: models.gender,
-                    as: 'gender',
-                    required: true,
-                },
-                {
-                    model: models.company,
-                    as: 'company',
-                    required: false,
-                },
-                {
-                    model: models.role,
-                    as: 'role',
-                    required: true,
-                },
-            ],
-        })
-
-        data.id = parsingUser.id
-        data.name = parsingUser.name
-        data.birthDate = parsingUser.birth_date
-        data.phoneNumber = parsingUser.phone_number
-        data.email = parsingUser.email
-        data.company = (parsingUser.company) ? {
-            id: parsingUser.company.id,
-            name: parsingUser.company.name,
-            isActive: parsingUser.company.is_active,
-        } : {}
-        data.role = {
-            id: parsingUser.role.id,
-            name: parsingUser.role.name,
-        }
-        data.isActive = parsingUser.isActive
-        data.createdAt = global.modules('config').core.moment(parsingUser.created_at).format('YYYY-MM-DD HH:mm:ss')
-        data.updatedAt = (parsingUser.updated_at) ? global.modules('config').core.moment(parsingUser.updated_at).format('YYYY-MM-DD HH:mm:ss') : null
-        data.gender = {
-            id: parsingUser.gender.id,
-            name: parsingUser.gender.name,
-        }
-
-        output.status = {
-            code: 200,
-            message: 'sukses mendapat data',
-        }
-
-        output.data = data;
-    } catch (error) {
-        output.status = {
-            code: 500,
-            message: error.message
-        }
-    }
-
-    res.status(output.status.code).send(output);
-};
-
 exports.postUser = async (req, res) => {
     let output = {};
 
     try {
-        let insertUser = await models.user.create({
+        let insertUser = await models.admin.create({
             name: req.body.name,
             birth_date: global.modules('config').core.moment(req.body.birthDate).format('YYYY-MM-DD'),
             phone_number: global.modules('helper').main.formatPhoneNumber(req.body.phoneNumber) || null,
@@ -292,7 +218,7 @@ exports.getUser = async (req, res) => {
         paramUser.limit = limit
         paramUser.offset = (page - 1) * limit
 
-        let parsingUser = await models.user.findAndCountAll(paramUser)
+        let parsingUser = await models.admin.findAndCountAll(paramUser)
 
         let totalData = parsingUser.count;
         let totalPage = Math.ceil(parsingUser.count / limit);
@@ -389,7 +315,7 @@ exports.updateProfile = async (req, res) => {
     let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
 
     try {
-        let updateUser = await models.user.update({
+        let updateUser = await models.admin.update({
             name: req.body.name,
             birth_date: global.modules('config').core.moment(req.body.birthDate).format('YYYY-MM-DD'),
             phone_number: global.modules('helper').main.formatPhoneNumber(req.body.phoneNumber) || null,

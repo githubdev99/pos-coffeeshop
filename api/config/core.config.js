@@ -70,7 +70,7 @@ core.dataAuth = async (authorization) => {
         },
     ]
 
-    let parsingUserAccount = await models.user.findOne(paramUserAccount)
+    let parsingUserAccount = await models.admin.findOne(paramUserAccount)
 
     data.id = parsingUserAccount.id
     data.name = parsingUserAccount.name
