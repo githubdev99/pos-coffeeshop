@@ -1,7 +1,7 @@
 const { Op, fn, col } = require('sequelize')
 const models = global.modules('config').core.models()
 
-exports.postLogin = async (req, res) => {
+exports.login = async (req, res) => {
     let output = {};
 
     try {
@@ -33,7 +33,7 @@ exports.postLogin = async (req, res) => {
     res.status(output.status.code).send(output);
 };
 
-exports.postUser = async (req, res) => {
+exports.addUser = async (req, res) => {
     let output = {};
 
     try {

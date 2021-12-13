@@ -2,7 +2,7 @@ const { Op, fn, col } = require('sequelize')
 const { check, body } = require('express-validator')
 const models = global.modules('config').core.models();
 
-const postLogin = () => [
+const login = () => [
     check('username')
         .trim()
         .escape()
@@ -88,7 +88,7 @@ const privateRoute = () => [
     })
 ]
 
-const postUser = () => [
+const addUser = () => [
     check('username')
         .trim()
         .escape()
@@ -112,16 +112,16 @@ const postUser = () => [
 
     body().custom(async ({ }, { req }) => {
         try {
-            let checkUsernameExist = await models.admin.findOne({
+            let checkDataInserted = await models.admin.findOne({
                 where: {
                     username: req.body.username.toLowerCase(),
                 }
             })
 
-            if (req.body.username && checkUsernameExist) {
+            if (req.body.username && checkDataInserted) {
                 return Promise.reject({
                     replaceCode: 409,
-                    replaceMessage: 'username sudah di input',
+                    replaceMessage: `username ${req.body.username} sudah di input`,
                 });
             }
         } catch (error) {
@@ -134,16 +134,16 @@ const postUser = () => [
 ]
 
 module.exports = {
-    postLogin: [
-        postLogin(),
+    login: [
+        login(),
         global.modules('helper').main.responseErrorValidator
     ],
     privateRoute: [
         privateRoute(),
         global.modules('helper').main.responseErrorValidator
     ],
-    postUser: [
-        postUser(),
+    addUser: [
+        addUser(),
         global.modules('helper').main.responseErrorValidator
     ],
 };

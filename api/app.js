@@ -19,12 +19,15 @@ global.modules = (module) => {
 		},
 		route: {
 			auth: require(`${process.cwd()}/routes/auth.route`),
+			item: require(`${process.cwd()}/routes/item.route`),
 		},
 		middleware: {
 			auth: require(`${process.cwd()}/controllers/auth/auth.middleware`),
+			item: require(`${process.cwd()}/controllers/item/item.middleware`),
 		},
 		controller: {
 			auth: require(`${process.cwd()}/controllers/auth/auth.controller`),
+			item: require(`${process.cwd()}/controllers/item/item.controller`),
 		},
 	}
 
