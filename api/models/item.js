@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    is_deleted: {
+    is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: 0

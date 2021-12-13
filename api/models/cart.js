@@ -7,6 +7,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    admin_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'admin',
+        key: 'id'
+      }
+    },
     item_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -37,6 +45,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "item_id" },
+        ]
+      },
+      {
+        name: "admin_id",
+        using: "BTREE",
+        fields: [
+          { name: "admin_id" },
         ]
       },
     ]

@@ -14,6 +14,10 @@ function initModels(sequelize) {
   var item = _item(sequelize, DataTypes);
   var item_category = _item_category(sequelize, DataTypes);
 
+  bill.belongsTo(admin, { as: "admin", foreignKey: "admin_id"});
+  admin.hasMany(bill, { as: "bills", foreignKey: "admin_id"});
+  cart.belongsTo(admin, { as: "admin", foreignKey: "admin_id"});
+  admin.hasMany(cart, { as: "carts", foreignKey: "admin_id"});
   bill_detail.belongsTo(bill, { as: "bill", foreignKey: "bill_id"});
   bill.hasMany(bill_detail, { as: "bill_details", foreignKey: "bill_id"});
   bill.belongsTo(item, { as: "item", foreignKey: "item_id"});
