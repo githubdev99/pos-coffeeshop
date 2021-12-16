@@ -14,8 +14,8 @@ exports.addCart = async (req, res) => {
 
         let queryCart = {}
         if (parsingCart) {
-            queryCart = await models.item.update({
-                qty: req.body.qty,
+            queryCart = await models.cart.update({
+                qty: parsingCart.qty + parseInt(req.body.qty),
             }, {
                 where: {
                     admin_id: dataAuth.id,
@@ -23,10 +23,10 @@ exports.addCart = async (req, res) => {
                 }
             })
         } else {
-            queryCart = await models.item.create({
+            queryCart = await models.cart.create({
                 admin_id: dataAuth.id,
                 item_id: req.body.itemId,
-                qty: parsingCart.qty + req.body.qty,
+                qty: parseInt(req.body.qty),
             })
         }
 

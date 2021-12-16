@@ -30,11 +30,26 @@ const addCart = () => [
                 }
             })
 
-            if (req.body.itemCategoryId && !checkItemExist) {
+            let parsingCart = await models.cart.findOne({
+                where: {
+                    item_id: req.body.itemId,
+                }
+            })
+
+            if (req.body.itemId && !checkItemExist) {
                 return Promise.reject({
                     replaceCode: 404,
                     replaceMessage: `menu tidak ditemukan`,
                 });
+            } else {
+                let qty = (parsingCart) ? parsingCart.qty + parseInt(req.body.qty) : parseInt(req.body.qty)
+
+                if (qty > checkItemExist.stock) {
+                    return Promise.reject({
+                        replaceCode: 400,
+                        replaceMessage: `kuantitas tidak boleh lebih dari stok`,
+                    });
+                }
             }
         } catch (error) {
             return Promise.reject({
