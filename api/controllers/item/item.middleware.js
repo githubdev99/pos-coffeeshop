@@ -89,6 +89,7 @@ const editCategory = () => [
     })
 ]
 
+// TODO belum ada fungsi upload foto
 const addItem = () => [
     check('itemCategoryId')
         .trim()

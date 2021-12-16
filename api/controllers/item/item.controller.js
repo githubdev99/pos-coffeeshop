@@ -63,6 +63,7 @@ exports.editCategory = async (req, res) => {
     res.status(output.status.code).send(output);
 };
 
+// TODO belum ada fungsi upload foto
 exports.addItem = async (req, res) => {
     let output = {};
 
