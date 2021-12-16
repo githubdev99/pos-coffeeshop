@@ -8,5 +8,6 @@ router.get('/', function (req, res, next) {
 // Routing Base Endpoint
 router.use('/auth', global.modules('route').auth);
 router.use('/item', global.modules('route').item);
+router.use('/cart', global.modules('route').cart);
 
 module.exports = router;
