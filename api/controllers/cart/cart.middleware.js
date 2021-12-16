@@ -4,7 +4,7 @@ const models = global.modules('config').core.models();
 
 // TODO lanjutin add cart
 const addCart = () => [
-    check('itemCategoryId')
+    check('itemId')
         .trim()
         .escape()
         .notEmpty()
@@ -13,23 +13,7 @@ const addCart = () => [
         .withMessage('format harus angka')
         .bail(),
 
-    check('name')
-        .trim()
-        .escape()
-        .notEmpty()
-        .withMessage('format tidak boleh kosong')
-        .bail(),
-
-    check('stock')
-        .trim()
-        .escape()
-        .notEmpty()
-        .withMessage('format tidak boleh kosong')
-        .isNumeric()
-        .withMessage('format harus angka')
-        .bail(),
-
-    check('price')
+    check('qty')
         .trim()
         .escape()
         .notEmpty()
@@ -40,27 +24,16 @@ const addCart = () => [
 
     body().custom(async ({ }, { req }) => {
         try {
-            let checkDataInserted = await models.item.findOne({
+            let checkItemExist = await models.item.findOne({
                 where: {
-                    name: req.body.name.toLowerCase(),
+                    id: req.body.itemId,
                 }
             })
 
-            let checkItemCategoryExist = await models.item_category.findOne({
-                where: {
-                    id: req.body.itemCategoryId,
-                }
-            })
-
-            if (req.body.name && checkDataInserted) {
-                return Promise.reject({
-                    replaceCode: 409,
-                    replaceMessage: `menu ${req.body.name} sudah di input`,
-                });
-            } else if (req.body.itemCategoryId && !checkItemCategoryExist) {
+            if (req.body.itemCategoryId && !checkItemExist) {
                 return Promise.reject({
                     replaceCode: 404,
-                    replaceMessage: `kategori tidak ditemukan`,
+                    replaceMessage: `menu tidak ditemukan`,
                 });
             }
         } catch (error) {
