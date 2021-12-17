@@ -122,3 +122,50 @@ exports.changeQty = async (req, res) => {
 
     res.status(output.status.code).send(output);
 };
+
+exports.getCart = async (req, res) => {
+    let output = {};
+    let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
+
+    try {
+        let data = {}
+        let paramData = {}
+
+        paramData.where = {
+            admin_id: dataAuth.id,
+        }
+        paramData.order = [['id', 'DESC']]
+        paramData.include = [
+            {
+                model: models.item,
+                as: 'item',
+                required: true,
+            },
+        ]
+
+        let parsingData = await models.cart.findAll(paramData)
+
+        data = await Promise.all(parsingData.map(async (items) => {
+            let dataItems = {}
+
+            dataItems.id = items.id
+            dataItems.item = items.item
+
+            return dataItems
+        }))
+
+        output.status = {
+            code: 200,
+            message: 'sukses mendapat data',
+        }
+
+        output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
