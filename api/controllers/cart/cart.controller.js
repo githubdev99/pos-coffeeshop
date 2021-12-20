@@ -145,11 +145,23 @@ exports.getCart = async (req, res) => {
 
         let parsingData = await models.cart.findAll(paramData)
 
-        data = await Promise.all(parsingData.map(async (items) => {
+        data.totalQty = 0
+        data.totalPrice = 0
+        data.totalPriceCurrencyFormat = global.modules('helper').main.rupiah(data.totalPrice)
+
+        let totalQty = []
+        let totalPrice = []
+        data.items = await Promise.all(parsingData.map(async (items) => {
             let dataItems = {}
 
             dataItems.id = items.id
-            dataItems.item = items.item
+            dataItems.item = {
+                id: items.item.id,
+                name: items.item.name,
+                image: items.item.image,
+                price: items.item.price,
+                priceCurrencyFormat: global.modules('helper').main.rupiah(items.item.price),
+            }
 
             return dataItems
         }))
