@@ -1,6 +1,6 @@
 const { Op, fn, col } = require('sequelize')
 const { check, body } = require('express-validator')
-const models = global.modules('config').core.models();
+const models = global.core.models();
 
 const login = () => [
     check('username')
@@ -30,7 +30,7 @@ const login = () => [
                     replaceCode: 404,
                     replaceMessage: 'username tidak ditemukan',
                 });
-            } else if (req.body.password && parsingAdmin && !(await global.modules('helper').main.verifyPassword(req.body.password, parsingAdmin.password))) {
+            } else if (req.body.password && parsingAdmin && !(await global.helper.verifyPassword(req.body.password, parsingAdmin.password))) {
                 return Promise.reject({
                     replaceCode: 400,
                     replaceMessage: 'username atau password salah',
@@ -56,7 +56,7 @@ const privateRoute = () => [
                     replaceMessage: 'autentikasi tidak valid',
                 });
             } else {
-                let token = global.modules('helper').main.jwtDecode(global.modules('helper').main.decryptText(headerAuth.split(' ')[1]))
+                let token = global.helper.jwtDecode(global.helper.decryptText(headerAuth.split(' ')[1]))
 
                 if (!token) {
                     return Promise.reject({
@@ -136,14 +136,14 @@ const addUser = () => [
 module.exports = {
     login: [
         login(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
     privateRoute: [
         privateRoute(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
     addUser: [
         addUser(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
 };

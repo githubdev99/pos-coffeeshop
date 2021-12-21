@@ -15,4 +15,9 @@ router.put('/qty/:action', [
     global.modules('middleware').cart.changeQty,
 ], global.modules('controller').cart.changeQty);
 
+router.delete('/:id', [
+    global.modules('middleware').auth.privateRoute,
+    global.modules('middleware').cart.deleteCart,
+], global.modules('controller').cart.deleteCart);
+
 module.exports = router;

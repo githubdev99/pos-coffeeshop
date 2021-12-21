@@ -1,9 +1,9 @@
 const { Op, fn, col } = require('sequelize')
-const models = global.modules('config').core.models()
+const models = global.core.models()
 
 exports.addCart = async (req, res) => {
     let output = {};
-    let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
 
     try {
         let parsingCart = await models.cart.findOne({
@@ -53,7 +53,7 @@ exports.addCart = async (req, res) => {
 
 exports.changeQty = async (req, res) => {
     let output = {};
-    let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
 
     try {
         let parsingCart = await models.cart.findOne({
@@ -125,7 +125,7 @@ exports.changeQty = async (req, res) => {
 
 exports.getCart = async (req, res) => {
     let output = {};
-    let dataAuth = await global.modules('config').core.dataAuth(req.headers.authorization.split(' ')[1])
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
 
     try {
         let data = {}
@@ -147,7 +147,7 @@ exports.getCart = async (req, res) => {
 
         data.totalQty = 0
         data.totalPrice = 0
-        data.totalPriceCurrencyFormat = global.modules('helper').main.rupiah(data.totalPrice)
+        data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
 
         let totalQty = []
         let totalPrice = []
@@ -155,16 +155,24 @@ exports.getCart = async (req, res) => {
             let dataItems = {}
 
             dataItems.id = items.id
-            dataItems.item = {
-                id: items.item.id,
-                name: items.item.name,
-                image: items.item.image,
-                price: items.item.price,
-                priceCurrencyFormat: global.modules('helper').main.rupiah(items.item.price),
-            }
+            dataItems.itemId = items.item.id
+            dataItems.name = items.item.name
+            dataItems.image = (items.item.image) ? `${global.core.pathImageItem}${items.item.image}` : global.core.noImageItem
+            dataItems.qty = items.qty
+            dataItems.price = items.item.price
+            dataItems.priceCurrencyFormat = global.helper.rupiah(dataItems.price)
+            dataItems.totalPrice = (items.item.price * items.qty)
+            dataItems.totalPriceCurrencyFormat = global.helper.rupiah(dataItems.totalPrice)
+
+            totalQty.push(dataItems.qty)
+            totalPrice.push(dataItems.totalPrice)
 
             return dataItems
         }))
+
+        data.totalQty = global.helper.sumArray(totalQty)
+        data.totalPrice = global.helper.sumArray(totalPrice)
+        data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
 
         output.status = {
             code: 200,
@@ -172,6 +180,39 @@ exports.getCart = async (req, res) => {
         }
 
         output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
+
+exports.deleteCart = async (req, res) => {
+    let output = {};
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
+
+    try {
+        let queryCart = await models.cart.destroy({
+            where: {
+                id: req.params.id,
+                admin_id: dataAuth.id,
+            }
+        })
+
+        if (!queryCart) {
+            output.status = {
+                code: 400,
+                message: 'gagal hapus data',
+            }
+        } else {
+            output.status = {
+                code: 200,
+                message: 'sukses hapus data',
+            }
+        }
     } catch (error) {
         output.status = {
             code: 500,

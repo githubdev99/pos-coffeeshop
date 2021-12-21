@@ -1,5 +1,5 @@
 const { Op, fn, col } = require('sequelize')
-const models = global.modules('config').core.models()
+const models = global.core.models()
 
 exports.addCategory = async (req, res) => {
     let output = {};

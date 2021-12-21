@@ -8,15 +8,12 @@ const helmet = require("helmet");
 
 var app = express();
 
-// Global Module
+// Global Variable
+require(`${process.cwd()}/config/core.config`)
+require(`${process.cwd()}/helper/main.helper`)
+
 global.modules = (module) => {
 	let modules = {
-		config: {
-			core: require(`${process.cwd()}/config/core.config`),
-		},
-		helper: {
-			main: require(`${process.cwd()}/helper/main.helper`),
-		},
 		route: {
 			auth: require(`${process.cwd()}/routes/auth.route`),
 			item: require(`${process.cwd()}/routes/item.route`),
@@ -36,7 +33,7 @@ global.modules = (module) => {
 
 	return modules[module]
 }
-// End Global Module
+// End Global Variable
 
 app.use(helmet());
 

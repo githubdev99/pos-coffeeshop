@@ -1,12 +1,15 @@
 require('dotenv').config()
-const core = {};
 
-core.dotenv = process.env
-core.CryptoJS = require("crypto-js")
-core.bcrypt = require("bcrypt")
-core.moment = require('moment')
+global.core = {}
 
-core.dbConnect = () => {
+global.core.dotenv = process.env
+global.core.CryptoJS = require("crypto-js")
+global.core.bcrypt = require("bcrypt")
+global.core.moment = require('moment')
+global.core.pathImageItem = `${process.cwd()}/assets/img/`
+global.core.noImageItem = `${global.core.pathImageItem}img-item-thumbnail.png`
+
+global.core.dbConnect = () => {
     const dbConfig = require(`${process.cwd()}/config/db.config`);
     const Sequelize = require("sequelize");
 
@@ -24,17 +27,17 @@ core.dbConnect = () => {
     });
 }
 
-core.models = () => {
+global.core.models = () => {
     const initModels = require(`${process.cwd()}/models/init-models`);
-    const models = initModels(core.dbConnect());
+    const models = initModels(global.core.dbConnect());
 
     return models;
 }
 
-core.dataAuth = async (authorization) => {
-    let models = core.models()
+global.core.dataAuth = async (authorization) => {
+    let models = global.core.models()
     let data = {}
-    let token = global.modules('helper').main.jwtDecode(global.modules('helper').main.decryptText(authorization))
+    let token = global.helper.jwtDecode(global.helper.decryptText(authorization))
 
     let paramUserAccount = {}
 
@@ -51,8 +54,8 @@ core.dataAuth = async (authorization) => {
 }
 
 // TODO bisa buat generate code bill
-core.generateNumberAccount = async (accountCategoryId) => {
-    let models = core.models()
+global.core.generateNumberAccount = async (accountCategoryId) => {
+    let models = global.core.models()
     let parsingAccountCategory = await models.account_category.findOne({
         where: {
             id: accountCategoryId
@@ -67,5 +70,3 @@ core.generateNumberAccount = async (accountCategoryId) => {
 
     return `${parsingAccountCategory.prefix_code}-${generateCode}`
 }
-
-module.exports = core;

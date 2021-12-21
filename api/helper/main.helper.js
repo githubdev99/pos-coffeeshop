@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-const helper = {};
+global.helper = {};
+
 const { validationResult } = require('express-validator')
 const nodemailer = require('nodemailer')
 const smtpTransport = require('nodemailer-smtp-transport')
@@ -11,14 +12,21 @@ const jwt = require('jsonwebtoken')
 
 const dotenv = process.env
 
-helper.rupiah = (number) => {
+global.helper.rupiah = (number) => {
     var reverse = number.toString().split("").reverse().join(""),
         ribuan = reverse.match(/\d{1,3}/g);
     ribuan = ribuan.join(".").split("").reverse().join("");
     return "Rp" + ribuan;
 }
 
-helper.responseErrorValidator = (req, res, next) => {
+global.helper.formatThousand = (number) => {
+    var reverse = number.toString().split("").reverse().join(""),
+        ribuan = reverse.match(/\d{1,3}/g);
+    ribuan = ribuan.join(".").split("").reverse().join("");
+    return ribuan;
+}
+
+global.helper.responseErrorValidator = (req, res, next) => {
     let output = {};
     let statusCode = 400
     let statusMessage = 'Permintaan tidak sesuai'
@@ -52,7 +60,7 @@ helper.responseErrorValidator = (req, res, next) => {
     next();
 }
 
-helper.mailing = (params) => {
+global.helper.mailing = (params) => {
     if (params) {
         let senderMail = "siplah.care@eurekabookhouse.co.id"
         let senderPass = "CARE@)!("
@@ -93,7 +101,7 @@ helper.mailing = (params) => {
     }
 }
 
-helper.removeSomeArrayExcept = (arr) => {
+global.helper.removeSomeArrayExcept = (arr) => {
     return function (hiddenArr) {
         if (!(arr.indexOf(hiddenArr) === -1)) {
             return hiddenArr
@@ -101,30 +109,30 @@ helper.removeSomeArrayExcept = (arr) => {
     }
 }
 
-helper.hashPassword = async (password) => {
+global.helper.hashPassword = async (password) => {
     const salt = await bcrypt.genSalt(10);
     const hashing = await bcrypt.hash(password, salt);
 
     return hashing
 }
 
-helper.verifyPassword = async (password, hashPassword) => {
+global.helper.verifyPassword = async (password, hashPassword) => {
     const verifyPassword = await bcrypt.compare(password, hashPassword);
 
     return verifyPassword
 }
 
-helper.encryptText = (text) => {
+global.helper.encryptText = (text) => {
     return CryptoJS.AES.encrypt(text, dotenv.AES_SECRET_KEY).toString()
 }
 
-helper.decryptText = (encryptText) => {
+global.helper.decryptText = (encryptText) => {
     let bytes = CryptoJS.AES.decrypt(encryptText, dotenv.AES_SECRET_KEY);
 
     return bytes.toString(CryptoJS.enc.Utf8);
 }
 
-helper.jwtEncode = (data, expiresIn = '') => {
+global.helper.jwtEncode = (data, expiresIn = '') => {
     const token = jwt.sign(data, dotenv.JWT_SECRET_KEY, (expiresIn) ? {
         expiresIn: expiresIn
     } : {})
@@ -132,7 +140,7 @@ helper.jwtEncode = (data, expiresIn = '') => {
     return token;
 }
 
-helper.jwtDecode = (token) => {
+global.helper.jwtDecode = (token) => {
     try {
         return jwt.verify(token, dotenv.JWT_SECRET_KEY, (err, decoded) => {
             return (err) ? {
@@ -148,7 +156,7 @@ helper.jwtDecode = (token) => {
     }
 }
 
-helper.formatPhoneNumber = (phoneNumber) => {
+global.helper.formatPhoneNumber = (phoneNumber) => {
     if (phoneNumber) {
         let getFirstChar = phoneNumber.charAt(0)
         return (getFirstChar === '0') ? `62${phoneNumber.substring(1)}` : phoneNumber
@@ -157,7 +165,7 @@ helper.formatPhoneNumber = (phoneNumber) => {
     }
 }
 
-helper.checkUrlValid = (url) => {
+global.helper.checkUrlValid = (url) => {
     try {
         new URL(url);
     } catch (e) {
@@ -167,8 +175,29 @@ helper.checkUrlValid = (url) => {
     return true;
 };
 
-helper.replaceAll = (str, find, replace) => {
+global.helper.replaceAll = (str, find, replace) => {
     return str.replace(new RegExp(find, 'g'), replace)
 }
 
-module.exports = helper;
+global.helper.sumArray = (input) => {
+    if (toString.call(input) !== "[object Array]") {
+        return false;
+    }
+
+    var total = 0;
+    for (var i = 0; i < input.length; i++) {
+        if (isNaN(input[i])) {
+            continue;
+        }
+        total += Number(input[i]);
+    }
+    return total;
+}
+
+global.helper.removeSpace = (string) => {
+    return string.replace(/(\r\n|\n|\r)/gm, "")
+}
+
+global.helper.ucwords = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}

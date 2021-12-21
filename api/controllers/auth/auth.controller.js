@@ -1,5 +1,5 @@
 const { Op, fn, col } = require('sequelize')
-const models = global.modules('config').core.models()
+const models = global.core.models()
 
 exports.login = async (req, res) => {
     let output = {};
@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
 
         let parsingAdmin = await models.admin.findOne(paramAdmin)
 
-        data = global.modules('helper').main.encryptText(global.modules('helper').main.jwtEncode({
+        data = global.helper.encryptText(global.helper.jwtEncode({
             id: parsingAdmin.id,
         }))
 
@@ -39,7 +39,7 @@ exports.addUser = async (req, res) => {
     try {
         let insertAdmin = await models.admin.create({
             username: req.body.username,
-            password: await global.modules('helper').main.hashPassword(req.body.password),
+            password: await global.helper.hashPassword(req.body.password),
             name: req.body.name,
         })
 

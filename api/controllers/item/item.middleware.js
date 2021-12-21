@@ -1,6 +1,6 @@
 const { Op, fn, col } = require('sequelize')
 const { check, body } = require('express-validator')
-const models = global.modules('config').core.models();
+const models = global.core.models();
 
 const addCategory = () => [
     check('name')
@@ -162,14 +162,14 @@ const addItem = () => [
 module.exports = {
     addCategory: [
         addCategory(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
     editCategory: [
         editCategory(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
     addItem: [
         addItem(),
-        global.modules('helper').main.responseErrorValidator
+        global.helper.responseErrorValidator
     ],
 };
