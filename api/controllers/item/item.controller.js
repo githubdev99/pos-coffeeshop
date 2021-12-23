@@ -96,3 +96,22 @@ exports.addItem = async (req, res) => {
 
     res.status(output.status.code).send(output);
 };
+
+// TODO lanjutin fungsi testing upload file
+exports.testUploadFile = async (req, res) => {
+    let output = {};
+
+    try {
+        output.status = {
+            code: 200,
+            message: 'sukses input data',
+        }
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};

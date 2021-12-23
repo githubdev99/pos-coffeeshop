@@ -9,6 +9,8 @@ const ejs = require('ejs')
 const bcrypt = require("bcrypt")
 const CryptoJS = require("crypto-js")
 const jwt = require('jsonwebtoken')
+const path = require('path')
+const multer = require('multer')
 
 const dotenv = process.env
 
@@ -201,3 +203,17 @@ global.helper.removeSpace = (string) => {
 global.helper.ucwords = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+var uploadPath = ''
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, uploadPath)
+        },
+        filename: (req, file, cb) => {
+            cb(null, req.body.name + Date.now() + path.extname(file.originalname))
+        }
+    })
+})
+
+global.helper.uploadFile = upload.single('image'), uploadPath = './assets/img/items'
