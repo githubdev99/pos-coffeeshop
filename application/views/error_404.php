@@ -10,9 +10,9 @@
 	<link rel="shortcut icon" href="<?= $core['miniLogo'] ?>">
 
 	<!-- Main CSS -->
-	<link href="<?= base_url() ?>asset/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="<?= base_url() ?>asset/css/icons.min.css" rel="stylesheet" type="text/css" />
-	<link href="<?= base_url() ?>asset/css/app.min.css" rel="stylesheet" type="text/css" />
+	<link href="<?= base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="<?= base_url() ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+	<link href="<?= base_url() ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="authentication-bg">
@@ -22,7 +22,7 @@
 				<div class="col-xl-4 col-lg-5 col-8">
 					<div class="text-center">
 						<div>
-							<img src="<?= base_url() ?>asset/images/not-found.png" alt="" class="img-fluid" />
+							<img src="<?= base_url() ?>assets/images/not-found.png" alt="" class="img-fluid" />
 						</div>
 					</div>
 
@@ -43,8 +43,8 @@
 	</div>
 
 	<!-- Main JS -->
-	<script src="<?= base_url() ?>asset/js/vendor.min.js"></script>
-	<script src="<?= base_url() ?>asset/js/app.min.js"></script>
+	<script src="<?= base_url() ?>assets/js/vendor.min.js"></script>
+	<script src="<?= base_url() ?>assets/js/app.min.js"></script>
 </body>
 
 </html>

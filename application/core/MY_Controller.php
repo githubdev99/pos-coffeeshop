@@ -12,7 +12,7 @@ class MY_Controller extends MX_Controller
 
 		$this->load->module('master');
 
-		$this->data['miniLogo'] = base_url() . 'asset/images/favicon.ico';
+		$this->data['miniLogo'] = base_url() . 'assets/images/favicon.ico';
 		$this->data['appName'] = 'POS Coffeeshop';
 
 		$this->data['apiUrl'] = 'http://localhost:3002/';
@@ -20,7 +20,7 @@ class MY_Controller extends MX_Controller
 
 	public function core($title)
 	{
-		$this->data['title_page'] = $title . ' | ' . $this->data['appName'];
+		$this->data['titlePage'] = $title . ' | ' . $this->data['appName'];
 
 		return $this->data;
 	}
