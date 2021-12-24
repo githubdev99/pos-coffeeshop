@@ -150,7 +150,6 @@ exports.getCategory = async (req, res) => {
     res.status(output.status.code).send(output);
 };
 
-// TODO belum ada fungsi upload foto
 exports.addItem = async (req, res) => {
     let output = {};
 
@@ -158,6 +157,7 @@ exports.addItem = async (req, res) => {
         let query = await models.item.create({
             item_category_id: req.body.itemCategoryId,
             name: req.body.name,
+            image: req.body.image,
             description: req.body.description,
             stock: req.body.stock,
             price: req.body.price,
@@ -191,10 +191,17 @@ exports.editItem = async (req, res) => {
         let query = await models.item.update({
             item_category_id: req.body.itemCategoryId,
             name: req.body.name,
+            image: req.body.image,
             description: req.body.description,
             stock: req.body.stock,
             price: req.body.price,
         }, {
+            where: {
+                id: req.params.id
+            }
+        })
+
+        let getData = await models.item.findOne({
             where: {
                 id: req.params.id
             }
@@ -206,6 +213,16 @@ exports.editItem = async (req, res) => {
                 message: 'gagal edit data',
             }
         } else {
+            if (req.body.image !== getData.image) {
+                global.core.fs.unlink("./assets/img/items/" + req.body.image, (err) => {
+                    if (err) {
+                        console.log("failed to delete local image:" + err);
+                    } else {
+                        console.log('successfully deleted local image');
+                    }
+                });
+            }
+
             output.status = {
                 code: 200,
                 message: 'sukses edit data',
@@ -322,14 +339,13 @@ exports.getItem = async (req, res) => {
     res.status(output.status.code).send(output);
 };
 
-// TODO lanjutin fungsi testing upload file
-exports.testUploadFile = async (req, res) => {
+exports.uploadFile = async (req, res) => {
     let output = {};
 
     try {
         output.status = {
             code: 200,
-            message: 'sukses input data',
+            message: 'sukses upload gambar',
             data: req.file.filename
         }
     } catch (error) {

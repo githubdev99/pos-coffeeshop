@@ -7,6 +7,7 @@ global.core.CryptoJS = require("crypto-js")
 global.core.bcrypt = require("bcrypt")
 global.core.moment = require('moment')
 global.core.axios = require('axios')
+global.core.fs = require('fs')
 global.core.pathImageItem = `${process.cwd()}/assets/img/`
 global.core.noImageItem = `${global.core.pathImageItem}img-item-thumbnail.png`
 

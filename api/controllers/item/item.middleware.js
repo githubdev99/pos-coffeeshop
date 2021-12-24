@@ -122,7 +122,6 @@ const editCategoryStatus = () => [
     })
 ]
 
-// TODO belum ada fungsi upload foto
 const addItem = () => [
     check('itemCategoryId')
         .trim()
@@ -319,12 +318,12 @@ const editItemStatus = () => [
     })
 ]
 
-const testUploadFile = () => [
+const uploadFile = () => [
     checkSchema({
         'image': {
             custom: {
                 options: (value, { req, path }) => req.file,
-                errorMessage: `image can't be empty`,
+                errorMessage: `gambar tidak boleh kosong`,
             },
         },
     }),
@@ -355,8 +354,8 @@ module.exports = {
         editItemStatus(),
         global.helper.responseErrorValidator
     ],
-    testUploadFile: [
-        testUploadFile(),
+    uploadFile: [
+        uploadFile(),
         global.helper.responseErrorValidator
     ],
 };
