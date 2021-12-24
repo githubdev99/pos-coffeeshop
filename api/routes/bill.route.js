@@ -8,5 +8,9 @@ router.post('/checkout', [
 router.get('/', [
     global.modules('middleware').auth.privateRoute,
 ], global.modules('controller').bill.getBill);
+router.get('/:id', [
+    global.modules('middleware').auth.privateRoute,
+    global.modules('middleware').bill.getBillDetail,
+], global.modules('controller').bill.getBillDetail);
 
 module.exports = router;

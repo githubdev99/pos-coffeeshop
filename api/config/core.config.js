@@ -8,8 +8,8 @@ global.core.bcrypt = require("bcrypt")
 global.core.moment = require('moment')
 global.core.axios = require('axios')
 global.core.fs = require('fs')
-global.core.pathImageItem = `${process.cwd()}/assets/img/`
-global.core.noImageItem = `${global.core.pathImageItem}img-item-thumbnail.png`
+global.core.pathImageItem = `${process.cwd()}/assets/img/items/`
+global.core.noImageItem = `${process.cwd()}/assets/img/img-item-thumbnail.png`
 
 global.core.dbConnect = () => {
     const dbConfig = require(`${process.cwd()}/config/db.config`);

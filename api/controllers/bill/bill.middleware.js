@@ -35,9 +35,46 @@ const addCheckout = () => [
     })
 ]
 
+const getBillDetail = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.bill.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
 module.exports = {
     addCheckout: [
         addCheckout(),
+        global.helper.responseErrorValidator
+    ],
+    getBillDetail: [
+        getBillDetail(),
         global.helper.responseErrorValidator
     ],
 };

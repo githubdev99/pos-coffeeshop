@@ -25,7 +25,7 @@ exports.addCheckout = async (req, res) => {
             await Promise.all(getCart.items.map(async (items) => {
                 await models.bill_detail.create({
                     bill_id: queryBill.id,
-                    item_id: items.id,
+                    item_id: items.itemId,
                     qty: items.qty,
                     price: items.price,
                     total_price: items.totalPrice,
@@ -35,7 +35,7 @@ exports.addCheckout = async (req, res) => {
                     stock: items.stock - items.qty,
                 }, {
                     where: {
-                        id: items.id,
+                        id: items.itemId,
                     }
                 })
             }))
@@ -89,6 +89,76 @@ exports.getBill = async (req, res) => {
 
             return dataItems
         }))
+
+        output.status = {
+            code: 200,
+            message: 'sukses mendapat data',
+        }
+
+        output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
+
+exports.getBillDetail = async (req, res) => {
+    let output = {};
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
+
+    try {
+        let data = {}
+        let paramData = {}
+
+        paramData.where = {
+            id: req.params.id,
+        }
+
+        let parsingData = await models.bill.findOne(paramData)
+
+        data.id = parsingData.id
+        data.bill = parsingData.bill
+        data.customerName = parsingData.customer_name
+        data.totalQty = 0
+        data.totalPrice = parsingData.total_price
+        data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
+
+        let parsingDetail = await models.bill.findAll({
+            where: {
+                bill_id: req.params.id,
+            },
+            include: [
+                {
+                    model: models.item,
+                    as: 'item',
+                    required: true,
+                },
+            ]
+        })
+
+        data.items = await Promise.all(parsingDetail.map(async (items) => {
+            let dataItems = {}
+
+            dataItems.id = items.id
+            dataItems.itemId = items.item.id
+            dataItems.name = items.item.name
+            dataItems.image = (items.item.image) ? `${global.core.pathImageItem}${items.item.image}` : global.core.noImageItem
+            dataItems.qty = items.qty
+            dataItems.price = items.price
+            dataItems.priceCurrencyFormat = global.helper.rupiah(dataItems.price)
+            dataItems.totalPrice = items.total_price
+            dataItems.totalPriceCurrencyFormat = global.helper.rupiah(dataItems.totalPrice)
+
+            totalQty.push(dataItems.qty)
+
+            return dataItems
+        }))
+
+        data.totalQty = global.helper.sumArray(totalQty)
 
         output.status = {
             code: 200,
