@@ -130,6 +130,7 @@ exports.getCategory = async (req, res) => {
             dataItems.id = items.id
             dataItems.name = items.name
             dataItems.isActive = items.is_active
+            dataItems.isSelected = (req.query.filterCategory && (req.query.filterCategory == dataItems.id)) ? true : false
 
             return dataItems
         }))
@@ -326,7 +327,10 @@ exports.getItem = async (req, res) => {
         paramData.where = {
             ...(req.query.isList && Boolean(Number(req.query.isList))) ? {} : {
                 is_active: 1,
-            }
+            },
+            ...(req.query.filterCategory) ? {
+                item_category_id: req.query.filterCategory,
+            } : {},
         }
         paramData.include = [
             {
