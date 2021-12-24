@@ -62,3 +62,46 @@ exports.addCheckout = async (req, res) => {
 
     res.status(output.status.code).send(output);
 };
+
+exports.getBill = async (req, res) => {
+    let output = {};
+    let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
+
+    try {
+        let data = {}
+        let paramData = {}
+
+        paramData.where = {
+            admin_id: dataAuth.id,
+        }
+        paramData.order = [['id', 'DESC']]
+
+        let parsingData = await models.bill.findAll(paramData)
+
+        data = await Promise.all(parsingData.map(async (items) => {
+            let dataItems = {}
+
+            dataItems.id = items.id
+            dataItems.bill = items.bill
+            dataItems.customerName = items.customer_name
+            dataItems.totalPrice = items.total_price
+            dataItems.totalPriceCurrencyFormat = global.helper.rupiah(dataItems.totalPrice)
+
+            return dataItems
+        }))
+
+        output.status = {
+            code: 200,
+            message: 'sukses mendapat data',
+        }
+
+        output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};

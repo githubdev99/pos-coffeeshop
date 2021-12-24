@@ -16,6 +16,10 @@ router.put('/category/status/:id', [
 router.get('/category', [
     global.modules('middleware').auth.privateRoute,
 ], global.modules('controller').item.getCategory);
+router.get('/category/:id', [
+    global.modules('middleware').auth.privateRoute,
+    global.modules('middleware').item.getCategoryDetail,
+], global.modules('controller').item.getCategoryDetail);
 
 router.post('/', [
     global.modules('middleware').auth.privateRoute,
@@ -32,6 +36,10 @@ router.put('/status/:id', [
 router.get('/', [
     global.modules('middleware').auth.privateRoute,
 ], global.modules('controller').item.getItem);
+router.get('/:id', [
+    global.modules('middleware').auth.privateRoute,
+    global.modules('middleware').item.getItemDetail,
+], global.modules('controller').item.getItemDetail);
 router.post('/upload-file', [
     global.modules('middleware').auth.privateRoute,
     global.helper.uploadFile,

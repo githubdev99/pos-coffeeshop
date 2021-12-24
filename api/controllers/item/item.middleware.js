@@ -122,6 +122,39 @@ const editCategoryStatus = () => [
     })
 ]
 
+const getCategoryDetail = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.item_category.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
 const addItem = () => [
     check('itemCategoryId')
         .trim()
@@ -318,6 +351,39 @@ const editItemStatus = () => [
     })
 ]
 
+const getItemDetail = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.item.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
 const uploadFile = () => [
     checkSchema({
         'image': {
@@ -342,6 +408,10 @@ module.exports = {
         editCategoryStatus(),
         global.helper.responseErrorValidator
     ],
+    getCategoryDetail: [
+        getCategoryDetail(),
+        global.helper.responseErrorValidator
+    ],
     addItem: [
         addItem(),
         global.helper.responseErrorValidator
@@ -352,6 +422,10 @@ module.exports = {
     ],
     editItemStatus: [
         editItemStatus(),
+        global.helper.responseErrorValidator
+    ],
+    getItemDetail: [
+        getItemDetail(),
         global.helper.responseErrorValidator
     ],
     uploadFile: [

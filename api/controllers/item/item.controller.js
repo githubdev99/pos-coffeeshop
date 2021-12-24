@@ -150,6 +150,39 @@ exports.getCategory = async (req, res) => {
     res.status(output.status.code).send(output);
 };
 
+exports.getCategoryDetail = async (req, res) => {
+    let output = {};
+
+    try {
+        let data = {}
+        let paramData = {}
+
+        paramData.where = {
+            id: req.params.id
+        }
+
+        let parsingData = await models.item_category.findOne(paramData)
+
+        data.id = parsingData.id
+        data.name = parsingData.name
+        data.isActive = parsingData.is_active
+
+        output.status = {
+            code: 200,
+            message: 'sukses mendapat data',
+        }
+
+        output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
+
 exports.addItem = async (req, res) => {
     let output = {};
 
@@ -313,15 +346,66 @@ exports.getItem = async (req, res) => {
             dataItems.isActive = items.is_active
             dataItems.name = items.name
             dataItems.image = (items.image) ? `${global.core.pathImageItem}${items.image}` : global.core.noImageItem
+            dataItems.description = items.description
             dataItems.category = {
                 id: items.item_category.id,
                 name: items.item_category.name,
             }
+            dataItems.stock = items.stock
             dataItems.price = items.price
             dataItems.priceCurrencyFormat = global.helper.rupiah(dataItems.price)
 
             return dataItems
         }))
+
+        output.status = {
+            code: 200,
+            message: 'sukses mendapat data',
+        }
+
+        output.data = data;
+    } catch (error) {
+        output.status = {
+            code: 500,
+            message: error.message
+        }
+    }
+
+    res.status(output.status.code).send(output);
+};
+
+exports.getItemDetail = async (req, res) => {
+    let output = {};
+
+    try {
+        let data = {}
+        let paramData = {}
+
+        paramData.where = {
+            id: req.params.id
+        }
+        paramData.include = [
+            {
+                model: models.item_category,
+                as: 'item_category',
+                required: true,
+            },
+        ]
+
+        let parsingData = await models.item.findOne(paramData)
+
+        data.id = parsingData.id
+        data.isActive = parsingData.is_active
+        data.name = parsingData.name
+        data.image = (parsingData.image) ? `${global.core.pathImageItem}${parsingData.image}` : global.core.noImageItem
+        data.description = parsingData.description
+        data.category = {
+            id: parsingData.item_category.id,
+            name: parsingData.item_category.name,
+        }
+        data.stock = parsingData.stock
+        data.price = parsingData.price
+        data.priceCurrencyFormat = global.helper.rupiah(data.price)
 
         output.status = {
             code: 200,
