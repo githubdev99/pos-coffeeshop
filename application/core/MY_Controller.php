@@ -12,16 +12,15 @@ class MY_Controller extends MX_Controller
 
 		$this->load->module('master');
 
-		$this->data['full_logo'] = base_url() . 'asset/images/logo-full.png';
-		$this->data['mini_logo'] = base_url() . 'asset/images/logo-mini.png';
-		$this->data['app_name'] = 'Seller Jaja ID';
+		$this->data['miniLogo'] = base_url() . 'asset/images/favicon.ico';
+		$this->data['appName'] = 'POS Coffeeshop';
 
-		$this->data['link_api'] = $this->data['link_jaja'] . 'core/seller/';
+		$this->data['apiUrl'] = 'http://localhost:3002/';
 	}
 
 	public function core($title)
 	{
-		$this->data['title_page'] = $title . ' | ' . $this->data['app_name'];
+		$this->data['title_page'] = $title . ' | ' . $this->data['appName'];
 
 		return $this->data;
 	}
