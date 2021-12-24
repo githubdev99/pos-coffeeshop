@@ -127,7 +127,7 @@ exports.getBillDetail = async (req, res) => {
         data.totalPrice = parsingData.total_price
         data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
 
-        let parsingDetail = await models.bill.findAll({
+        let parsingDetail = await models.bill_detail.findAll({
             where: {
                 bill_id: req.params.id,
             },
@@ -140,6 +140,7 @@ exports.getBillDetail = async (req, res) => {
             ]
         })
 
+        let totalQty = []
         data.items = await Promise.all(parsingDetail.map(async (items) => {
             let dataItems = {}
 
