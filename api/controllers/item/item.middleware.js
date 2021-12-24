@@ -89,6 +89,39 @@ const editCategory = () => [
     })
 ]
 
+const editCategoryStatus = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.item_category.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
 // TODO belum ada fungsi upload foto
 const addItem = () => [
     check('itemCategoryId')
@@ -159,6 +192,133 @@ const addItem = () => [
     })
 ]
 
+const editItem = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    check('itemCategoryId')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    check('name')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .bail(),
+
+    check('stock')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    check('price')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.item.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            } else {
+                let checkDataInserted = await models.item.findOne({
+                    where: {
+                        name: req.body.name.toLowerCase(),
+                        id: {
+                            [Op.ne]: req.params.id
+                        }
+                    }
+                })
+
+                let checkItemCategoryExist = await models.item_category.findOne({
+                    where: {
+                        id: req.body.itemCategoryId,
+                    }
+                })
+
+                if (req.body.name && checkDataInserted) {
+                    return Promise.reject({
+                        replaceCode: 409,
+                        replaceMessage: `menu ${req.body.name} sudah di input`,
+                    });
+                } else if (req.body.itemCategoryId && !checkItemCategoryExist) {
+                    return Promise.reject({
+                        replaceCode: 404,
+                        replaceMessage: `kategori tidak ditemukan`,
+                    });
+                }
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
+const editItemStatus = () => [
+    check('id')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('format tidak boleh kosong')
+        .isNumeric()
+        .withMessage('format harus angka')
+        .bail(),
+
+    body().custom(async ({ }, { req }) => {
+        try {
+            let checkDataExist = await models.item.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (!checkDataExist) {
+                return Promise.reject({
+                    replaceCode: 404,
+                    replaceMessage: 'data tidak ditemukan',
+                });
+            }
+        } catch (error) {
+            return Promise.reject({
+                replaceCode: 500,
+                replaceMessage: error.message,
+            });
+        };
+    })
+]
+
 module.exports = {
     addCategory: [
         addCategory(),
@@ -168,8 +328,20 @@ module.exports = {
         editCategory(),
         global.helper.responseErrorValidator
     ],
+    editCategoryStatus: [
+        editCategoryStatus(),
+        global.helper.responseErrorValidator
+    ],
     addItem: [
         addItem(),
+        global.helper.responseErrorValidator
+    ],
+    editItem: [
+        editItem(),
+        global.helper.responseErrorValidator
+    ],
+    editItemStatus: [
+        editItemStatus(),
         global.helper.responseErrorValidator
     ],
 };

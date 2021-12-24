@@ -134,7 +134,6 @@ exports.getCart = async (req, res) => {
         paramData.where = {
             admin_id: dataAuth.id,
         }
-        paramData.order = [['id', 'DESC']]
         paramData.include = [
             {
                 model: models.item,
@@ -142,6 +141,7 @@ exports.getCart = async (req, res) => {
                 required: true,
             },
         ]
+        paramData.order = [['id', 'DESC']]
 
         let parsingData = await models.cart.findAll(paramData)
 
