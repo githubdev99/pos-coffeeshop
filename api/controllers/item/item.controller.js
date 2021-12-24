@@ -296,7 +296,10 @@ exports.getItem = async (req, res) => {
             dataItems.isActive = items.is_active
             dataItems.name = items.name
             dataItems.image = (items.image) ? `${global.core.pathImageItem}${items.image}` : global.core.noImageItem
-            dataItems.qty = items.qty
+            dataItems.category = {
+                id: items.item_category.id,
+                name: items.item_category.name,
+            }
             dataItems.price = items.price
             dataItems.priceCurrencyFormat = global.helper.rupiah(dataItems.price)
 
