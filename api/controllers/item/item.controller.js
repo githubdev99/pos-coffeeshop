@@ -188,6 +188,12 @@ exports.editItem = async (req, res) => {
     let output = {};
 
     try {
+        let getData = await models.item.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+
         let query = await models.item.update({
             item_category_id: req.body.itemCategoryId,
             name: req.body.name,
@@ -201,20 +207,14 @@ exports.editItem = async (req, res) => {
             }
         })
 
-        let getData = await models.item.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-
         if (!query) {
             output.status = {
                 code: 400,
                 message: 'gagal edit data',
             }
         } else {
-            if (req.body.image !== getData.image) {
-                global.core.fs.unlink("./assets/img/items/" + req.body.image, (err) => {
+            if (req.body.image && (req.body.image !== getData.image)) {
+                global.core.fs.unlink(`./assets/img/items/${getData.image}`, (err) => {
                     if (err) {
                         console.log("failed to delete local image:" + err);
                     } else {
