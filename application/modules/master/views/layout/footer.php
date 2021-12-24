@@ -11,14 +11,15 @@
 <!-- dashboard init -->
 <script src="assets/js/pages/dashboard.init.js"></script>
 
+<script src="assets/libs/sweetalert2/dist/sweetalert2.min.js"></script>
+
 <!-- App js -->
+<script src="assets/custom/custom.js"></script>
 <script src="assets/js/app.js"></script>
 
-<script>
-	<?php if (!empty($get_script)) : ?>
-		<?= $this->load->view($get_script); ?>
-	<?php endif ?>
-</script>
+<?php if (!empty($get_script)) : ?>
+	<?= $this->load->view($get_script); ?>
+<?php endif ?>
 </body>
 
 </html>

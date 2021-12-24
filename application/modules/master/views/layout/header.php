@@ -9,6 +9,8 @@
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="assets/images/favicon.ico">
 
+	<link href="assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
 	<!-- Bootstrap Css -->
 	<link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
 	<!-- Icons Css -->
