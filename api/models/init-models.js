@@ -20,8 +20,6 @@ function initModels(sequelize) {
   admin.hasMany(cart, { as: "carts", foreignKey: "admin_id"});
   bill_detail.belongsTo(bill, { as: "bill", foreignKey: "bill_id"});
   bill.hasMany(bill_detail, { as: "bill_details", foreignKey: "bill_id"});
-  bill.belongsTo(item, { as: "item", foreignKey: "item_id"});
-  item.hasMany(bill, { as: "bills", foreignKey: "item_id"});
   bill_detail.belongsTo(item, { as: "item", foreignKey: "item_id"});
   item.hasMany(bill_detail, { as: "bill_details", foreignKey: "item_id"});
   cart.belongsTo(item, { as: "item", foreignKey: "item_id"});
