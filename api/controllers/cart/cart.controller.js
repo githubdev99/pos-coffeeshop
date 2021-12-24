@@ -128,58 +128,12 @@ exports.getCart = async (req, res) => {
     let dataAuth = await global.core.dataAuth(req.headers.authorization.split(' ')[1])
 
     try {
-        let data = {}
-        let paramData = {}
-
-        paramData.where = {
-            admin_id: dataAuth.id,
-        }
-        paramData.include = [
-            {
-                model: models.item,
-                as: 'item',
-                required: true,
-            },
-        ]
-        paramData.order = [['id', 'DESC']]
-
-        let parsingData = await models.cart.findAll(paramData)
-
-        data.totalQty = 0
-        data.totalPrice = 0
-        data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
-
-        let totalQty = []
-        let totalPrice = []
-        data.items = await Promise.all(parsingData.map(async (items) => {
-            let dataItems = {}
-
-            dataItems.id = items.id
-            dataItems.itemId = items.item.id
-            dataItems.name = items.item.name
-            dataItems.image = (items.item.image) ? `${global.core.pathImageItem}${items.item.image}` : global.core.noImageItem
-            dataItems.qty = items.qty
-            dataItems.price = items.item.price
-            dataItems.priceCurrencyFormat = global.helper.rupiah(dataItems.price)
-            dataItems.totalPrice = (items.item.price * items.qty)
-            dataItems.totalPriceCurrencyFormat = global.helper.rupiah(dataItems.totalPrice)
-
-            totalQty.push(dataItems.qty)
-            totalPrice.push(dataItems.totalPrice)
-
-            return dataItems
-        }))
-
-        data.totalQty = global.helper.sumArray(totalQty)
-        data.totalPrice = global.helper.sumArray(totalPrice)
-        data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
-
         output.status = {
             code: 200,
             message: 'sukses mendapat data',
         }
 
-        output.data = data;
+        output.data = await global.core.dataCart(dataAuth.id);
     } catch (error) {
         output.status = {
             code: 500,

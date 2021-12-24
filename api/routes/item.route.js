@@ -34,7 +34,9 @@ router.get('/', [
 ], global.modules('controller').item.getItem);
 
 // TODO lanjutin fungsi testing upload file
-router.post('/testUploadFile', [
+router.post('/test-upload-file', [
     global.modules('middleware').auth.privateRoute,
+    global.helper.uploadFile,
+    global.modules('middleware').item.testUploadFile,
 ], global.modules('controller').item.testUploadFile);
 module.exports = router;

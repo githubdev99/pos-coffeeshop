@@ -205,15 +205,15 @@ global.helper.ucwords = (string) => {
 }
 
 var uploadPath = ''
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, uploadPath)
-        },
-        filename: (req, file, cb) => {
-            cb(null, req.body.name + Date.now() + path.extname(file.originalname))
-        }
-    })
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadPath)
+    },
+    filename: (req, file, cb) => {
+        cb(null, req.body.name + Date.now() + path.extname(file.originalname))
+    }
 })
+
+const upload = multer({ storage: storage })
 
 global.helper.uploadFile = upload.single('image'), uploadPath = './assets/img/items'

@@ -9,5 +9,6 @@ router.get('/', function (req, res, next) {
 router.use('/auth', global.modules('route').auth);
 router.use('/item', global.modules('route').item);
 router.use('/cart', global.modules('route').cart);
+router.use('/bill', global.modules('route').bill);
 
 module.exports = router;

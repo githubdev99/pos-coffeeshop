@@ -330,6 +330,7 @@ exports.testUploadFile = async (req, res) => {
         output.status = {
             code: 200,
             message: 'sukses input data',
+            data: req.file.filename
         }
     } catch (error) {
         output.status = {

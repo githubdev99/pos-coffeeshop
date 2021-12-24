@@ -1,5 +1,5 @@
 const { Op, fn, col } = require('sequelize')
-const { check, body } = require('express-validator')
+const { check, body, checkSchema } = require('express-validator')
 const models = global.core.models();
 
 const addCategory = () => [
@@ -319,6 +319,17 @@ const editItemStatus = () => [
     })
 ]
 
+const testUploadFile = () => [
+    checkSchema({
+        'image': {
+            custom: {
+                options: (value, { req, path }) => req.file,
+                errorMessage: `image can't be empty`,
+            },
+        },
+    }),
+]
+
 module.exports = {
     addCategory: [
         addCategory(),
@@ -342,6 +353,10 @@ module.exports = {
     ],
     editItemStatus: [
         editItemStatus(),
+        global.helper.responseErrorValidator
+    ],
+    testUploadFile: [
+        testUploadFile(),
         global.helper.responseErrorValidator
     ],
 };

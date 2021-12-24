@@ -30,6 +30,10 @@ module.exports = function(sequelize, DataTypes) {
     price: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    total_price: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
