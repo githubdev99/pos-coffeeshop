@@ -35,24 +35,24 @@
                             </a>
                         </div>
                         <div class="p-2">
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data" name="login">
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+                                    <input type="text" class="form-control login" id="username" placeholder="Enter username" name="username">
                                     <span class="text-danger body-username"></span>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Password</label>
                                     <div class="input-group auth-pass-inputgroup">
-                                        <input type="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon" name="password">
+                                        <input type="password" class="form-control login" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon" name="password">
                                         <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
                                     </div>
                                     <span class="text-danger body-password"></span>
                                 </div>
 
                                 <div class="mt-3 d-grid">
-                                    <button class="btn btn-primary waves-effect waves-light" type="button">Log In</button>
+                                    <button class="btn btn-primary waves-effect waves-light" type="submit" name="login">Log In</button>
                                 </div>
                             </form>
                         </div>

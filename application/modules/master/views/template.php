@@ -15,6 +15,19 @@
                 </div>
             </div>
         </div>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script> <?= $core['appName'] ?>. All right reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
     <?php else : ?>
         <?php
         if (!empty($get_view)) {

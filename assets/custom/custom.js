@@ -265,3 +265,11 @@ function rupiah(number) {
 	ribuan = ribuan.join(".").split("").reverse().join("");
 	return "Rp" + ribuan;
 }
+
+const formConvertObject = (formArray) => {
+	var returnArray = {};
+	for (var i = 0; i < formArray.length; i++) {
+		returnArray[formArray[i]['name']] = formArray[i]['value'];
+	}
+	return returnArray;
+}

@@ -12,4 +12,9 @@ class Master extends MY_Controller
     {
         $this->load->view('template', $data);
     }
+
+    public function test()
+    {
+        echo 'work';
+    }
 }

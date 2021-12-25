@@ -14,8 +14,6 @@ class MY_Controller extends MX_Controller
 
 		$this->data['miniLogo'] = base_url() . 'assets/images/favicon.ico';
 		$this->data['appName'] = 'POS Coffeeshop';
-
-		$this->data['apiUrl'] = 'http://localhost:3002/';
 	}
 
 	public function core($title)
