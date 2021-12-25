@@ -98,7 +98,7 @@ const changeQty = () => [
 
             let checkCartExist = await models.cart.findOne({
                 where: {
-                    id: req.body.itemId,
+                    item_id: req.body.itemId,
                     admin_id: dataAuth.id,
                 }
             })
