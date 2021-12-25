@@ -24,6 +24,7 @@
                 <table class="table table-bordered table-striped dt-responsive nowrap w-100" id="listCategory">
                     <thead class="table-info">
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Status</th>
                             <th>Opsi</th>

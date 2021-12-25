@@ -1,11 +1,14 @@
 <script>
     $(function() {
         getItemCategory()
+        getSelectCategory()
 
-        $('form[name="addCategory"]').submit(function(e) {
+        $('form[name="addCategory"]').submit(async function(e) {
             e.preventDefault();
 
             let data = formConvertObject($(this).serializeArray())
+
+            data.image = (document.getElementById("imageAddCategory").files[0]) ? await uploadFile(document.getElementById("imageAddCategory").files[0]) : null
 
             var myHeaders = new Headers();
             myHeaders.append("Authorization", localStorage.getItem('token'));
@@ -20,7 +23,7 @@
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:3002/item/category", requestOptions)
+            fetch("http://localhost:3002/item", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     let typeAlert = ''
@@ -77,10 +80,12 @@
                 });
         });
 
-        $('form[name="editCategory"]').submit(function(e) {
+        $('form[name="editCategory"]').submit(async function(e) {
             e.preventDefault();
 
             let data = formConvertObject($(this).serializeArray())
+
+            data.image = (document.getElementById("imageEditCategory").files[0]) ? await uploadFile(document.getElementById("imageEditCategory").files[0]) : $('#editCategory [name="imageOldEditCategory"]').val()
 
             var myHeaders = new Headers();
             myHeaders.append("Authorization", localStorage.getItem('token'));
@@ -95,7 +100,7 @@
                 redirect: 'follow'
             };
 
-            fetch(`http://localhost:3002/item/category/${data.id}`, requestOptions)
+            fetch(`http://localhost:3002/item/${data.id}`, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     let typeAlert = ''
@@ -153,6 +158,35 @@
         });
     });
 
+    const uploadFile = async (file) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", localStorage.getItem('token'));
+
+        var formdata = new FormData();
+        formdata.append("image", file);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        return await fetch("http://localhost:3002/item/upload-file", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                return result.data
+            })
+            .catch(error => {
+                show_alert({
+                    type: 'error',
+                    title: 'Error!',
+                    timer: 2500,
+                    message: error
+                });
+            });
+    }
+
     const getItemCategory = () => {
         let listCategory = $('#listCategory').DataTable()
         listCategory.clear().draw();
@@ -166,13 +200,18 @@
             redirect: 'follow'
         };
 
-        fetch("http://localhost:3002/item/category?isList=1&filterCategory=", requestOptions)
+        fetch("http://localhost:3002/item?isList=1&filterCategory=", requestOptions)
             .then(response => response.json())
             .then(result => {
                 result.data.map((items, index) => {
                     listCategory.row.add([
                         `${++index}`,
+                        `<img class="img-thumbnail" alt="200x200" src="${items.image}" data-holder-rendered="true" width="200">`,
                         `${items.name}`,
+                        `${items.category.name}`,
+                        `${items.description}`,
+                        `${items.stock}`,
+                        `${items.priceCurrencyFormat}`,
                         `<div class="square-switch">
                             <input type="checkbox" id="square-switch${items.id}" onclick="changeStatusItemCategory(${items.id})" switch="none" ${(items.isActive) ? `checked` : ``} />
                             <label for="square-switch${items.id}" data-on-label="On"
@@ -202,7 +241,7 @@
             redirect: 'follow'
         };
 
-        fetch(`http://localhost:3002/item/category/status/${id}`, requestOptions)
+        fetch(`http://localhost:3002/item/status/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.status.code === 200) {
@@ -237,11 +276,17 @@
             redirect: 'follow'
         };
 
-        fetch(`http://localhost:3002/item/category/${id}`, requestOptions)
+        fetch(`http://localhost:3002/item/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 $('#editCategory [name="id"]').val(result.data.id)
+                $('#editCategory [name="itemCategoryId"]').val(result.data.category.id)
+                $('#editCategory #imageOldEditCategory').attr('src', result.data.image)
+                $('#editCategory [name="imageOldEditCategory"]').val(result.data.imageFile)
                 $('#editCategory [name="name"]').val(result.data.name)
+                $('#editCategory [name="description"]').val(result.data.description)
+                $('#editCategory [name="stock"]').val(result.data.stock)
+                $('#editCategory [name="price"]').val(result.data.price)
 
                 $('#editCategory').modal('show')
             })
@@ -257,5 +302,39 @@
 
     const closeEditCategory = () => {
         $('#editCategory').modal('hide')
+    }
+
+    const getSelectCategory = () => {
+        let listCategory = $('#listCategory').DataTable()
+        listCategory.clear().draw();
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", localStorage.getItem('token'));
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:3002/item/category?isList=0&filterCategory=", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                let categoryOption = []
+                result.data.map((items) => {
+                    categoryOption.push(`
+                    <option value="${items.id}">${items.name}</option>`)
+                })
+
+                $(`[name="itemCategoryId"]`).html(categoryOption)
+            })
+            .catch(error => {
+                show_alert({
+                    type: 'error',
+                    title: 'Error!',
+                    timer: 2500,
+                    message: error
+                });
+            });
     }
 </script>

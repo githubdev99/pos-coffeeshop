@@ -402,6 +402,7 @@ exports.getItemDetail = async (req, res) => {
         data.isActive = parsingData.is_active
         data.name = parsingData.name
         data.image = (parsingData.image) ? `${global.core.pathImageItem}${parsingData.image}` : global.core.noImageItem
+        data.imageFile = parsingData.image
         data.description = parsingData.description
         data.category = {
             id: parsingData.item_category.id,
@@ -434,8 +435,9 @@ exports.uploadFile = async (req, res) => {
         output.status = {
             code: 200,
             message: 'sukses upload gambar',
-            data: req.file.filename
         }
+
+        output.data = req.file.filename
     } catch (error) {
         output.status = {
             code: 500,

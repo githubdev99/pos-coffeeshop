@@ -22,6 +22,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= base_url() ?>main/menu/category">Kategori Menu</a></li>
+                        <li><a href="<?= base_url() ?>main/menu/item">Menu</a></li>
                     </ul>
                 </li>
             </ul>

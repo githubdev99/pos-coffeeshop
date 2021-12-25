@@ -29,4 +29,15 @@ class Menu extends MY_Controller
         ];
         $this->master->template($data);
     }
+
+    public function item()
+    {
+        $title = 'Daftar Menu';
+        $data = [
+            'core' => $this->core($title),
+            'get_view' => 'main/v_item',
+            'get_script' => 'main/script_item'
+        ];
+        $this->master->template($data);
+    }
 }
