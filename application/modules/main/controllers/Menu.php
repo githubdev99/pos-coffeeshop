@@ -40,4 +40,15 @@ class Menu extends MY_Controller
         ];
         $this->master->template($data);
     }
+
+    public function bill()
+    {
+        $title = 'History Transaksi';
+        $data = [
+            'core' => $this->core($title),
+            'get_view' => 'main/v_bill',
+            'get_script' => 'main/script_bill'
+        ];
+        $this->master->template($data);
+    }
 }

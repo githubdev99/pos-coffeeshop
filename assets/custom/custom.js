@@ -34,6 +34,8 @@ $(document).ready(function () {
 	$(".hide-element").each(function () {
 		$(this).hide();
 	});
+
+	$(".qtyCart").TouchSpin({ verticalbuttons: !0 });
 });
 
 function convert_date(date) {

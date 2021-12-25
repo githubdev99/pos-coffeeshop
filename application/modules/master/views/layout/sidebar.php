@@ -16,6 +16,13 @@
                 </li>
 
                 <li>
+                    <a href="<?= base_url() ?>main/menu/bill" class="waves-effect">
+                        <i class="bx bx-task"></i>
+                        <span>History Transaksi</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-list-ul"></i>
                         <span>Master Data</span>

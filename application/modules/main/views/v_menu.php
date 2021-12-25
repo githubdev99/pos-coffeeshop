@@ -9,7 +9,12 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-xl-7">col-xl-4</div>
+    <div class="col-xl-7">
+        <ul class="nav nav-pills nav-justified mb-3" id="listCategory" role="tablist">
+        </ul>
+        <div class="row" id="listMenu">
+        </div>
+    </div>
     <div class="col-xl-5">
         <div class="card">
             <div class="card-body">
@@ -31,8 +36,22 @@
                 </div>
                 <!-- end table-responsive -->
                 <div class="row">
+                    <div class="col mt-2">
+                        <table border="0">
+                            <tr>
+                                <td>Total Kuantitas</td>
+                                <td>&ensp;:&ensp;</td>
+                                <td><span id="totalQty" style="font-weight: bold;"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Total Belanja</td>
+                                <td>&ensp;:&ensp;</td>
+                                <td><span id="totalPrice" style="font-weight: bold;"></span></td>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="col" style="text-align: right;">
-                        <button type="button" class="btn btn-info waves-effect mt-3">Checkout</button>
+                        <button type="button" class="btn btn-success waves-effect mt-3" onclick="showAddCheckout()">Checkout</button>
                     </div>
                 </div>
             </div>
@@ -40,3 +59,29 @@
     </div>
 </div>
 <!-- end row -->
+
+<div class="modal fade" id="addCheckout" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form method="post" enctype="multipart/form-data" name="addCheckout">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="example-text-input" class="col-md-3 col-form-label">Nama Pemesan <span class="text-danger">*</span></label>
+                        <div class="col-md-9">
+                            <input class="form-control addCheckout" type="text" name="customerName">
+                            <span class="text-danger body-customerName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success waves-effect waves-light" name="addCheckout">Checkout</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
