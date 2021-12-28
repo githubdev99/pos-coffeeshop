@@ -68,11 +68,12 @@
 		window.location.reload()
 	}
 
+	let dataProfile = {}
 	$(async function() {
-		await getProfile()
+		dataProfile = await getProfile()
 
 		let getFirstUrl = '<?= $this->uri->segment(1) ?>'
-		if (localStorage.getItem('token')) {
+		if (localStorage.getItem('token') && dataProfile) {
 			if (getFirstUrl != 'main') {
 				window.location = "<?= base_url() ?>main/menu"
 			}
