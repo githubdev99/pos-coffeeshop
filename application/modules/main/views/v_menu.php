@@ -51,7 +51,7 @@
                         </table>
                     </div>
                     <div class="col" style="text-align: right;">
-                        <button type="button" class="btn btn-success waves-effect mt-3" onclick="showAddCheckout()">Checkout</button>
+                        <button type="button" class="btn btn-success waves-effect mt-3" id="buttonAddCheckout" onclick="showAddCheckout()" style="display: none;">Checkout</button>
                     </div>
                 </div>
             </div>

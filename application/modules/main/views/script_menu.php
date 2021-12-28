@@ -209,6 +209,12 @@
         fetch("http://localhost:3002/cart", requestOptions)
             .then(response => response.json())
             .then(result => {
+                if (result.data.items.length) {
+                    $('#buttonAddCheckout').show()
+                } else {
+                    $('#buttonAddCheckout').hide()
+                }
+
                 result.data.items.map((items, index) => {
                     listCart.push(`
                     <tr>
