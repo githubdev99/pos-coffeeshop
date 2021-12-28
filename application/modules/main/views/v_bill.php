@@ -21,6 +21,7 @@
                             <th>Bill</th>
                             <th>Nama Pelanggan</th>
                             <th>Total Belanja</th>
+                            <th>Tgl Pesanan</th>
                             <th>Opsi</th>
                         </tr>
                     </thead>
@@ -57,6 +58,10 @@
                         </address>
                     </div>
                     <div class="col-sm-6 text-sm-end">
+                        <address>
+                            <strong>Tgl Pesanan:</strong><br>
+                            <span id="createdAt"></span>
+                        </address>
                     </div>
                 </div>
                 <div class="py-2 mt-3">

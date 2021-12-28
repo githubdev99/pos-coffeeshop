@@ -68,9 +68,8 @@
 		window.location.reload()
 	}
 
-	let dataProfile = {}
 	$(async function() {
-		dataProfile = await getProfile()
+		await getProfile()
 
 		let getFirstUrl = '<?= $this->uri->segment(1) ?>'
 		if (localStorage.getItem('token')) {

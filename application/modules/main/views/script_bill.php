@@ -25,6 +25,7 @@
                         `${items.bill}`,
                         `${items.customerName}`,
                         `${items.totalPriceCurrencyFormat}`,
+                        `${items.createdAt}`,
                         `<button type="button" class="btn btn-info btn-rounded waves-effect waves-light" onclick="showDetail(${items.id})"><i class="fas fa-info"></i></button>`,
                     ]).draw(false);
                 })
@@ -54,6 +55,7 @@
             .then(result => {
                 $('#bill').html(result.data.bill)
                 $('#customerName').html(result.data.customerName)
+                $('#createdAt').html(result.data.createdAt)
 
                 let billDetailItems = []
                 result.data.items.map((items, index) => {

@@ -1,8 +1,10 @@
 <script>
     $(function() {
-        getCategory()
-        getMenu()
-        getCart()
+        if (localStorage.getItem('token')) {
+            getCategory()
+            getMenu()
+            getCart()
+        }
 
         $('form[name="addCheckout"]').submit(function(e) {
             e.preventDefault();

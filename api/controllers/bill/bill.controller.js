@@ -86,6 +86,7 @@ exports.getBill = async (req, res) => {
             dataItems.customerName = items.customer_name
             dataItems.totalPrice = items.total_price
             dataItems.totalPriceCurrencyFormat = global.helper.rupiah(dataItems.totalPrice)
+            dataItems.createdAt = global.core.moment(items.created_at).format('YYYY-MM-DD HH:mm:ss')
 
             return dataItems
         }))
@@ -126,6 +127,7 @@ exports.getBillDetail = async (req, res) => {
         data.totalQty = 0
         data.totalPrice = parsingData.total_price
         data.totalPriceCurrencyFormat = global.helper.rupiah(data.totalPrice)
+        data.createdAt = global.core.moment(parsingData.created_at).format('YYYY-MM-DD HH:mm:ss')
 
         let parsingDetail = await models.bill_detail.findAll({
             where: {
