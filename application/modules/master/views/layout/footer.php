@@ -8,7 +8,7 @@
 <!-- dashboard init -->
 <script src="<?= base_url() ?>assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>assets/libs/sweetalert2/dist/sweetalert2.min.js"></script>
+<script src="<?= base_url() ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="<?= base_url() ?>assets/libs/select2/js/select2.min.js"></script>
 <script src="<?= base_url() ?>assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 
